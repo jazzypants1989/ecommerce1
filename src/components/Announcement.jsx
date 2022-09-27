@@ -6,10 +6,11 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #34fac5;
+  background-color: rgba(52, 250, 197, 0.7);
   font-size: 1.75rem;
   color: rgba(0, 80, 192, 1);
   font-weight: bolder;
+  letter-spacing: 0.33rem;
 `;
 
 const Announcement = () => {

@@ -82,7 +82,7 @@ const Navbar = () => {
           Search:
           <Input />
           <SearchIcon
-            style={{ color: "#FEFBA8", fontSize: 16, cursor: "pointer" }}
+            style={{ color: "#34fac5", fontSize: 16, cursor: "pointer" }}
           />
         </Search>
         <Logo>Electric Larry's!</Logo>
