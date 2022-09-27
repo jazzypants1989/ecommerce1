@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../responsive";
 
 const Container = styled.div`
   width: 100vw;
@@ -20,6 +21,10 @@ const Wrapper = styled.div`
   background-color: rgba(0, 120, 225, 0.5);
   border-radius: 10px;
   box-shadow: 0px 0px 5px rgba(0, 120, 225, 0.5);
+  ${media.tablet`width: 60%;
+  padding: 1.5rem;`}
+  ${media.phone`width: 75%;
+  padding: 1rem;`}
 `;
 
 const Title = styled.h1`
@@ -30,6 +35,8 @@ const Title = styled.h1`
 const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
+
+  ${media.tablet`flex-direction: column;`}
 `;
 const Input = styled.input`
   ::placeholder {
@@ -37,6 +44,7 @@ const Input = styled.input`
     font-size: 1.66rem;
   }
   flex: 1;
+  height: 2rem;
   min-width: 40%;
   margin: 0.75rem 0.5rem 0 0;
   padding: 0.5rem;
@@ -49,6 +57,14 @@ const Input = styled.input`
   &:focus {
     outline: none;
   }
+
+  ${media.tablet`margin: 0.5rem 0;
+  padding: 0.5rem;
+  font-size: 1.5rem;`}
+
+  ${media.phone`margin: 0.25rem 0;
+  padding: 0.25rem;
+  font-size: 1.33rem;`}
 `;
 const Agreement = styled.span`
   font-size: 0.75rem;

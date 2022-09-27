@@ -8,14 +8,13 @@ import {
   Pinterest,
   Instagram,
 } from "@material-ui/icons";
+import { media } from "../responsive";
 
 const Container = styled.div`
   display: flex;
-
-  @media only screen and (max-width: 768px) {
-    flex-direction: column;
-  }
+  ${media.tablet`flex-direction: column;`}
 `;
+
 const Left = styled.div`
   flex: 1;
   display: flex;
@@ -72,6 +71,7 @@ const ListItem = styled.li`
   margin-bottom: 0.25rem;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
 `;
 const ContactItem = styled.div`
   display: flex;

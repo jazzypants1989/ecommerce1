@@ -1,5 +1,6 @@
 import { MailOutline } from "@material-ui/icons";
 import styled from "styled-components";
+import { media } from "../responsive";
 
 const Container = styled.div`
   height: 60vh;
@@ -8,6 +9,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  ${media.tablet`height: 50vh;`}
 `;
 const Title = styled.h1`
   font-size: 2.33rem;
@@ -22,9 +25,8 @@ const Description = styled.p`
   font-size: 1.66rem;
   margin-bottom: 1rem;
   font-weight: 300;
-  @media only screen and (max-width: 768px) {
-    margin: 1rem;
-  }
+  ${media.tablet`font-size: 1.5rem;`}
+  ${media.phone`font-size: 1.25rem;`}
 `;
 const InputContainer = styled.div`
   width: 50%;
@@ -59,11 +61,11 @@ const InputContainer = styled.div`
     transform-origin: right;
     transition: transform 0.5s ease;
   }
+  ${media.tablet`width: 80%;`}
 
-  @media only screen and (max-width: 768px) {
-    width: 80%;
-  }
+  ${media.phone`width: 100%;`}
 `;
+
 const Input = styled.input`
   ::placeholder {
     color: rgba(247, 118, 5, 0.95);
@@ -74,6 +76,12 @@ const Input = styled.input`
   padding-left: 20px;
   background-color: transparent;
   font-size: 1.75rem;
+
+  ${media.tablet`font-size: 1.5rem;
+  padding-left: 10px;`}
+
+  ${media.phone`font-size: 1.25rem;
+  padding-left: 5px;`}
 `;
 const Button = styled.button`
   flex: 1;

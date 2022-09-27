@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { media } from "../responsive";
 
 const Container = styled.div`
   width: 100vw;
@@ -24,6 +25,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  ${media.tablet`width: 60%;`}
+  ${media.phone`width: 75%;`}
 `;
 
 const Title = styled.h1`

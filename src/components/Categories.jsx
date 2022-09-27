@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { categories } from "../data";
 import CategoryItem from "./CategoryItem";
+import { media } from "../responsive";
 
 const Container = styled.div`
   display: flex;
   padding: 20px;
   justify-content: space-between;
+  ${media.tablet`flex-direction: column;
+  align-items: center;`}
 `;
 
 const Categories = () => {
