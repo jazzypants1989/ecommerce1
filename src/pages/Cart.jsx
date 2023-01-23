@@ -1,9 +1,14 @@
-import styled from "styled-components";
 import Announcement from "../components/Announcement";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Add, Remove } from "@material-ui/icons";
+import Navbar from "../components/Navbar";
+import Pay from "../components/Pay";
+import { useEffect, useState } from "react";
+import { userRequest } from "../requestMethods";
 import { media } from "../responsive";
+import { useNavigate } from "react-router-dom";
+import { Add, Remove } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -104,8 +109,6 @@ const ProductName = styled.span`
   ${media.phone`font-size: 1.25rem;`}
 `;
 const ProductId = styled.span``;
-const ProductCategory = styled.div``;
-const ProductCondition = styled.span``;
 const PriceDetail = styled.div`
   flex: 1;
   display: flex;
@@ -182,99 +185,96 @@ const Button = styled.span`
 `;
 
 const Cart = () => {
+  const cart = useSelector((state) => state.cart);
+  const [stripeToken, setStripeToken] = useState(null);
+  const navigate = useNavigate();
+
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        const res = await userRequest.post("/checkout/payment", {
+          tokenId: stripeToken.id,
+          amount: 500,
+        });
+        history.push("/success", {
+          stripeData: res.data,
+          products: cart,
+        });
+      } catch {}
+    };
+    stripeToken && makeRequest();
+  }, [stripeToken, cart.total, history]);
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
-        <Title>CART (NOT VAPE)</Title>
+        <Title>YOUR BAG</Title>
         <Top>
           <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag (2)</TopText>
+            <TopText>Shopping Bag(2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
-            <Product>
-              <ProductDetail>
-                <Image src="https://www.sagamusic.com/wp-content/uploads/2020/07/SS-10_a_bg-510x628.png" />
-                <Details>
-                  <ProductName>
-                    <b>Product:</b> A really cool banjo that totally won't annoy
-                    your roommates.
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> 93813718293
-                  </ProductId>
-                  <ProductCategory>
-                    <b>Category:</b> Music!
-                  </ProductCategory>
-                  <ProductCondition>
-                    <b>Condition:</b> Like New
-                  </ProductCondition>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Remove />
-                  <ProductAmount>1</ProductAmount>
-                  <Add />
-                </ProductAmountContainer>
-                <ProductPrice>$51</ProductPrice>
-              </PriceDetail>
-            </Product>
+            {cart.products.map((product) => (
+              <Product>
+                <ProductDetail>
+                  <Image src={product.img} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b> {product.title}
+                    </ProductName>
+                    <ProductId>
+                      <b>ID:</b> {product._id}
+                    </ProductId>
+                    <ProductColor color={product.color} />
+                    <ProductSize>
+                      <b>Size:</b> {product.size}
+                    </ProductSize>
+                  </Details>
+                </ProductDetail>
+                <PriceDetail>
+                  <ProductAmountContainer>
+                    <Add />
+                    <ProductAmount>{product.quantity}</ProductAmount>
+                    <Remove />
+                  </ProductAmountContainer>
+                  <ProductPrice>
+                    $ {product.price * product.quantity}
+                  </ProductPrice>
+                </PriceDetail>
+              </Product>
+            ))}
             <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src="https://funkogames.com/wp-content/uploads/2022/02/FunkoGames_GoofyMovie.png" />
-                <Details>
-                  <ProductName>
-                    <b>Product:</b> A Goofy Movie Board Game. You know you want
-                    it.
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> 93813718293
-                  </ProductId>
-                  <ProductCategory>
-                    <b>Category:</b> Board Games!
-                  </ProductCategory>
-                  <ProductCondition>
-                    <b>Condition:</b> Decent
-                  </ProductCondition>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Remove />
-                  <ProductAmount>2</ProductAmount>
-                  <Add />
-                </ProductAmountContainer>
-                <ProductPrice>$14.50</ProductPrice>
-              </PriceDetail>
-            </Product>
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
               <SummaryItemPrice>$ 5.90</SummaryItemPrice>
             </SummaryItem>
-            <SummaryItem type="total">
-              <SummaryItemText>Discount</SummaryItemText>
-              <SummaryItemPrice>$ 10.80</SummaryItemPrice>
+            <SummaryItem>
+              <SummaryItemText>Shipping Discount</SummaryItemText>
+              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemTotal>$ 75.10</SummaryItemTotal>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
+            <Pay />
+            <Button onClick={() => navigate("/success")}>CHECKOUT NOW</Button>
           </Summary>
         </Bottom>
       </Wrapper>
@@ -282,4 +282,5 @@ const Cart = () => {
     </Container>
   );
 };
+
 export default Cart;

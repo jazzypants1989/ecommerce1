@@ -5,6 +5,8 @@ import Products from "../components/Products";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { media } from "../responsive";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -43,6 +45,19 @@ const Select = styled.select`
 const Option = styled.option``;
 
 const ProductList = () => {
+  const location = useLocation();
+  const cat = location.pathname.split("/")[2];
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState("newest");
+
+  const handleFilters = (e) => {
+    const value = e.target.value.toLowerCase();
+    setFilters({
+      ...filters,
+      [e.target.name]: value,
+    });
+  };
+
   return (
     <Container>
       <Navbar />
@@ -51,38 +66,34 @@ const ProductList = () => {
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products:</FilterText>
-          <Select>
-            <Option disabled selected>
-              Category
-            </Option>
-            <Option>Movies</Option>
-            <Option>Games</Option>
-            <Option>Board Games</Option>
-            <Option>Music</Option>
-            <Option>Toys</Option>
-            <Option>Electronics</Option>
+          <Select name="category" onChange={handleFilters}>
+            <Option disabled>Category</Option>
+            <Option>movies</Option>
+            <Option>games</Option>
+            <Option>board Games</Option>
+            <Option>music</Option>
+            <Option>toys</Option>
+            <Option>electronics</Option>
           </Select>
-          <Select>
-            <Option disabled selected>
-              SubCategory
-            </Option>
-            <Option>Hopefully,</Option>
-            <Option>I can make this dynamic</Option>
-            <Option>So it changes</Option>
-            <Option>Depending on the</Option>
-            <Option>Category the user selects </Option>
+          <Select name="subcategory" onChange={handleFilters}>
+            <Option disabled>SubCategory</Option>
+            <Option></Option>
+            <Option></Option>
+            <Option></Option>
+            <Option></Option>
+            <Option></Option>
           </Select>
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
-          <Select>
-            <Option selected>Newest</Option>
-            <Option>Price (asc)</Option>
-            <Option>Price (desc)</Option>
+          <Select onChange={(e) => setSort(e.target.value)}>
+            <Option value="newest">Newest</Option>
+            <Option value="asc">Price (asc)</Option>
+            <Option value="desc">Price (desc)</Option>
           </Select>
         </Filter>
       </FilterContainer>
-      <Products />
+      <Products cat={cat} filters={filters} sort={sort} />
       <Newsletter />
       <Footer />
     </Container>

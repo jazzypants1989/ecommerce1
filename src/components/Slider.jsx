@@ -1,10 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import {
-  ArrowLeftTwoTone,
-  ArrowRightTwoTone,
-  Autorenew,
-} from "@material-ui/icons";
+import { ArrowLeftTwoTone, ArrowRightTwoTone } from "@material-ui/icons";
 import { sliderItems } from "../data";
 import { media } from "../responsive";
 
